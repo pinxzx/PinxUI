@@ -7,8 +7,8 @@
     <ProjectGuid>{648BF49D-C4CE-487E-B6CB-A7AF64F9437C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TEst</RootNamespace>
-    <AssemblyName>TEst</AssemblyName>
+    <RootNamespace>PinxUI</RootNamespace>
+    <AssemblyName>PinxUI</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -47,8 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="Menus\PedStopMenu.cs" />
+    <Compile Include="Menus\Items\InterfaceItem.cs" />
+    <Compile Include="Menus\Items\Item.cs" />
+    <Compile Include="Menus\Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Menus\Frames\MainFrames\ItemFrame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Menus\Frames\MainFrames\SolidFrame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,42 +1,33 @@
 ﻿using Rage;
 using System.Drawing;
-using TEst.Menus;
+using PinxUI.Menus;
+using PinxUI.Menus.Items;
 
-[assembly: Rage.Attributes.Plugin("My First Plugin", Description = "This is my first plugin.", Author = "MyName")]
+[assembly: Rage.Attributes.Plugin("Testing", Description = "This is my first plugin.", Author = "MyName")]
 
-namespace MyFirstPlugin
+namespace PinxUI
 {
     public static class EntryPoint
     {
-        private static PedStopMenu pedStopMenu;
+        private static Menu meuMenu;
         public static void Main()
         {
-            
+            meuMenu = new Menu("Boas", Color.Red);
 
-            pedStopMenu = new PedStopMenu();
-            SeparatorItem Separator = new SeparatorItem("Separator Dynamic Bla Bla", Color.FromArgb(150, Color.Black), Color.White);
-            MenuItem RequestPedCheckItem = new MenuItem("Request Ped Check to Dispatch", Color.FromArgb(100, Color.Black), Color.LightBlue);
-            SeparatorItem Separator2 = new SeparatorItem("Separator", Color.FromArgb(150, Color.Black), Color.White);
-            MenuItem TesteItem = new MenuItem("Search Ped", Color.FromArgb(100, Color.Black), Color.LightBlue);
-            SeparatorItem Separator3 = new SeparatorItem("Separator", Color.FromArgb(150, Color.Black), Color.White);
-            MenuItem Teste2Item = new MenuItem("Arrest Ped", Color.FromArgb(100, Color.Black), Color.Red);
-            MenuItem Teste3Item = new MenuItem("Release Ped", Color.FromArgb(100, Color.Black), Color.Orange);
+            Item item1 = new Item("Search Ped", Color.LightBlue);
 
-            pedStopMenu.AddItem(Separator);
-            pedStopMenu.AddItem(RequestPedCheckItem);
-            pedStopMenu.AddItem(Separator2);
-            pedStopMenu.AddItem(TesteItem);
-            pedStopMenu.AddItem(Separator3);
-            pedStopMenu.AddItem(TesteItem);
-            pedStopMenu.AddItem(Teste2Item);
+            Item item2 = new Item("Arrest Ped", Color.OrangeRed);
 
+            meuMenu.Items.Add(item1);
+            meuMenu.Items.Add(item2);
 
             Game.FrameRender += OnFrameRender;
+
             GameFiber.Hibernate();
         }
         private static void OnFrameRender(object sender, GraphicsEventArgs Graphics)
         {
-            pedStopMenu.DrawMenu(Graphics); 
+            meuMenu.Process(Graphics);
         }
     }
 }
