@@ -9,6 +9,9 @@ namespace PinxUI
 {
     public static class EntryPoint
     {
+
+        // JUST FOR INGAME TEST
+
         private static Menu meuMenu;
         public static void Main()
         {
