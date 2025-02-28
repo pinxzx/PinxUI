@@ -53,10 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Menus\Frames\MainFrames\ItemFrame.png" />
+    <EmbeddedResource Include="Menus\Frames\MainFrames\SolidFrame.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Menus\Frames\MainFrames\SolidFrame.png" />
+    <EmbeddedResource Include="Menus\Frames\MainFrames\ItemFrame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
