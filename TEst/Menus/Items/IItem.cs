@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PinxUI.Fonts;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace PinxUI.Menus.Items
 
         string Text { get; set; }
         Color TextColor { get; set; }
+
+        string Font {  get; set; }
 }
 }

@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
+using PinxUI.Fonts;
 
 namespace PinxUI.Menus.Items
 {
@@ -22,10 +23,13 @@ namespace PinxUI.Menus.Items
         public string Text { get; set; } 
         public Color TextColor { get; set; } 
 
-        public Item(string Text, Color Color)
+        public string Font { get; set; }
+
+        public Item(string Text, Color Color, string Font)
         {
             this.Text = Text;
             this.TextColor = Color;
+            this.Font = Font;
         }
 
     }

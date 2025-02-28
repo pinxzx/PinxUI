@@ -5,11 +5,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using PinxUI.Menus.Items;
-
+using PinxUI.Fonts;
+using System.Windows.Forms;
 namespace PinxUI.Menus
 {
     public class Menu
     {
+
+        public bool Active = true;
+
         // View Configs
         public float PositionX = 10f;
         public float PositionY = 40f;
@@ -32,14 +36,19 @@ namespace PinxUI.Menus
         // Items
         public List<IItem> Items { get; private set; } = new List<IItem>();
 
+        // Font
+        public string Font;
         // FontSizes
         private float _titleFontSize = 40f;
-        private float _fontSizes = 20f;
+        private float _fontSizes = 24f;
 
-        public Menu(string Title, Color TitleColor)
+        // Key to open/close
+
+        public Menu(string Title, Color TitleColor, string Font)
         {
             this.Title = Title;
             this.Color = TitleColor;
+            this.Font = Font;
 
             Width = Game.Resolution.Width * 0.2f;
             Height = Game.Resolution.Height * 0.5f;
@@ -56,6 +65,13 @@ namespace PinxUI.Menus
             {
                 Game.LogTrivial("Failed to load ItemTexture.");
             }
+            FontFamily[] fontFamilies = FontFamily.Families;
+
+            // Imprime o nome de cada família de fontes
+            foreach (FontFamily font in fontFamilies)
+            {
+            Game.LogTrivial (font.Name);
+            }
         }
 
         /// <summary>
@@ -63,50 +79,53 @@ namespace PinxUI.Menus
         /// </summary>
         public void Process(GraphicsEventArgs GraphicsArgs)
         {
-            var e = GraphicsArgs.Graphics;
-
-            _mainFrameRect = new RectangleF(PositionX, PositionY, Width, Height);
-
-            // Check if MainFrameTexture is loaded
-            if (MainFrameTexture != null)
+            if (Active)
             {
-                e.DrawTexture(MainFrameTexture, _mainFrameRect);
-                // Draw the Menu Title
-                SizeF _measureTextSize = Rage.Graphics.MeasureText(Title, "Arial", _fontSizes); // Measure the text 
-                PointF _textPointF = new PointF(PositionX + (Width / 2) - _measureTextSize.Width, PositionY+10f);
-                e.DrawText(Title, "Arial", _titleFontSize, _textPointF, Color);
-            }
-            else
-            {
-                Game.LogTrivial("MainFrameTexture is not loaded.");
-            }
+                var e = GraphicsArgs.Graphics;
 
-            // Draw Items
-            float itemOffsetY = PositionY*1.8f;
-            for (int i = 0; i < Items.Count; i++)
-            {
-                Items[i].Width = Width*0.9f;
-                Items[i].Height = Height * 0.08f;
-                Items[i].PositionX = PositionX + ((Width/2) - (Items[i].Width/2));
-                Items[i].PositionY = PositionY + itemOffsetY;
+                _mainFrameRect = new RectangleF(PositionX, PositionY, Width, Height);
 
-                RectangleF _ItemFrameRect = new RectangleF(Items[i].PositionX, Items[i].PositionY, Items[i].Width, Items[i].Height);
-
-                // Check if ItemTexture is loaded
-                if (ItemTexture != null)
+                // Check if MainFrameTexture is loaded
+                if (MainFrameTexture != null)
                 {
-                    e.DrawTexture(ItemTexture, _ItemFrameRect);
+                    e.DrawTexture(MainFrameTexture, _mainFrameRect);
+                    // Draw the Menu Title
+                    SizeF _measureTextSize = Rage.Graphics.MeasureText(Title, Font, _titleFontSize); // Measure the text 
+                    PointF _textPointF = new PointF(PositionX + (Width / 2) - (_measureTextSize.Width/2), PositionY + 10f);
+                    e.DrawText(Title, Font, _titleFontSize, _textPointF, Color, _mainFrameRect);
                 }
                 else
                 {
-                    Game.LogTrivial("ItemTexture is not loaded.");
+                    Game.LogTrivial("MainFrameTexture is not loaded.");
                 }
 
-                // Items Text
-                SizeF _textMeasure = Rage.Graphics.MeasureText(Items[i].Text, "Arial", _fontSizes); // Measure the text 
-                float textOffsetY = Items[i].PositionY + ((Items[i].Height/2) - _textMeasure.Height); // Centralize the text Y position
-                e.DrawText(Items[i].Text, "Arial", _fontSizes, new PointF(Items[i].PositionX, textOffsetY), Items[i].TextColor, _ItemFrameRect);
-                itemOffsetY += Items[i].Height * 1.1f;
+                // Draw Items
+                float itemOffsetY = PositionY * 1.8f;
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    Items[i].Width = Width * 0.9f;
+                    Items[i].Height = Height * 0.08f;
+                    Items[i].PositionX = PositionX + ((Width / 2) - (Items[i].Width / 2));
+                    Items[i].PositionY = PositionY + itemOffsetY;
+
+                    RectangleF _ItemFrameRect = new RectangleF(Items[i].PositionX, Items[i].PositionY, Items[i].Width, Items[i].Height);
+
+                    // Check if ItemTexture is loaded
+                    if (ItemTexture != null)
+                    {
+                        e.DrawTexture(ItemTexture, _ItemFrameRect);
+                    }
+                    else
+                    {
+                        Game.LogTrivial("ItemTexture is not loaded.");
+                    }
+
+                    // Items Text
+                    SizeF _textMeasure = Rage.Graphics.MeasureText(Items[i].Text, Items[i].Font, _fontSizes); // Measure the text 
+                    float textOffsetY = Items[i].PositionY + ((Items[i].Height / 2f) - (_textMeasure.Height)); // Centralize the text Y position. Not accurate,,,
+                    e.DrawText(Items[i].Text, Items[i].Font, _fontSizes, new PointF(Items[i].PositionX + 5f, textOffsetY), Items[i].TextColor, _ItemFrameRect);
+                    itemOffsetY += Items[i].Height * 1.1f;
+                }
             }
         }
 
