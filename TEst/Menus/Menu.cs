@@ -2,13 +2,8 @@
 using Rage;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
-using System.CodeDom;
 using PinxUI.Menus.Items;
 
 namespace PinxUI.Menus
@@ -36,6 +31,10 @@ namespace PinxUI.Menus
 
         // Items
         public List<IItem> Items { get; private set; } = new List<IItem>();
+
+        // FontSizes
+        private float _titleFontSize = 40f;
+        private float _fontSizes = 20f;
 
         public Menu(string Title, Color TitleColor)
         {
@@ -72,6 +71,10 @@ namespace PinxUI.Menus
             if (MainFrameTexture != null)
             {
                 e.DrawTexture(MainFrameTexture, _mainFrameRect);
+                // Draw the Menu Title
+                SizeF _measureTextSize = Rage.Graphics.MeasureText(Title, "Arial", _fontSizes); // Measure the text 
+                PointF _textPointF = new PointF(PositionX + (Width / 2) - _measureTextSize.Width, PositionY+10f);
+                e.DrawText(Title, "Arial", _titleFontSize, _textPointF, Color);
             }
             else
             {
@@ -79,29 +82,30 @@ namespace PinxUI.Menus
             }
 
             // Draw Items
-            float itemOffsetY = 30f;
+            float itemOffsetY = PositionY*1.8f;
             for (int i = 0; i < Items.Count; i++)
             {
-                Items[i].PositionX = PositionX;
+                Items[i].Width = Width*0.9f;
+                Items[i].Height = Height * 0.08f;
+                Items[i].PositionX = PositionX + ((Width/2) - (Items[i].Width/2));
                 Items[i].PositionY = PositionY + itemOffsetY;
-                Items[i].Width = Width;
-                Items[i].Height = Height * 0.1f;
 
-                float textOffsetY = Items[i].PositionY + (Items[i].Height / 2) - 24f;
-
-                Game.DisplayNotification(i.ToString());
+                RectangleF _ItemFrameRect = new RectangleF(Items[i].PositionX, Items[i].PositionY, Items[i].Width, Items[i].Height);
 
                 // Check if ItemTexture is loaded
                 if (ItemTexture != null)
                 {
-                    e.DrawTexture(ItemTexture, new RectangleF(Items[i].PositionX, Items[i].PositionY, Items[i].Width, Items[i].Height));
+                    e.DrawTexture(ItemTexture, _ItemFrameRect);
                 }
                 else
                 {
                     Game.LogTrivial("ItemTexture is not loaded.");
                 }
 
-                e.DrawText(Items[i].Text, "Arial", 24f, new PointF(Items[i].PositionX, textOffsetY), Items[i].TextColor);
+                // Items Text
+                SizeF _textMeasure = Rage.Graphics.MeasureText(Items[i].Text, "Arial", _fontSizes); // Measure the text 
+                float textOffsetY = Items[i].PositionY + ((Items[i].Height/2) - _textMeasure.Height); // Centralize the text Y position
+                e.DrawText(Items[i].Text, "Arial", _fontSizes, new PointF(Items[i].PositionX, textOffsetY), Items[i].TextColor, _ItemFrameRect);
                 itemOffsetY += Items[i].Height * 1.1f;
             }
         }
