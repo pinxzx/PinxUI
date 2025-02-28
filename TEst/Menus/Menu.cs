@@ -35,7 +35,7 @@ namespace PinxUI.Menus
         private RectangleF _itemFrameRect;
 
         // Items
-        public List<InterfaceItem> Items { get; private set; } = new List<InterfaceItem>();
+        public List<IItem> Items { get; private set; } = new List<IItem>();
 
         public Menu(string Title, Color TitleColor)
         {
@@ -109,7 +109,7 @@ namespace PinxUI.Menus
         /// <summary>
         /// Add a item to the Menu.
         /// </summary>
-        public void AddItem(InterfaceItem item)
+        public void AddItem(IItem item)
         {
             if (item != null)
             {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PinxUI.Menus.Items
 {
-    public interface InterfaceItem
+    public interface IItem
     {
         float PositionX { get; set; }
         float PositionY { get; set; }

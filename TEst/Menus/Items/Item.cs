@@ -11,7 +11,7 @@ using System.Runtime.Remoting.Messaging;
 
 namespace PinxUI.Menus.Items
 {
-    class Item : InterfaceItem
+    class Item : IItem
     {
         public float PositionX { get; set; }
         public float PositionY { get; set; }

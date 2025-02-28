@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="Menus\Items\InterfaceItem.cs" />
+    <Compile Include="Menus\Items\IItem.cs" />
     <Compile Include="Menus\Items\Item.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
