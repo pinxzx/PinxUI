@@ -7,12 +7,15 @@ using System.Reflection;
 using PinxUI.Menus.Items;
 using PinxUI.Fonts;
 using System.Windows.Forms;
+using PinxUI.Menus.Input;
 namespace PinxUI.Menus
 {
     public class Menu
     {
 
         public bool Active = true;
+
+        public Menu menu;
 
         // View Configs
         public float PositionX = 10f;
@@ -28,6 +31,7 @@ namespace PinxUI.Menus
         // Textures
         private Texture MainFrameTexture;
         private Texture ItemTexture;
+        private Texture ItemSelectedTexture;
 
         // Rectangles
         private RectangleF _mainFrameRect;
@@ -42,10 +46,18 @@ namespace PinxUI.Menus
         private float _titleFontSize = 40f;
         private float _fontSizes = 24f;
 
-        // Key to open/close
+        // Items Offset
+        private float itemOffsetY;
+
+        public int selectedItemIndex = 0;
+
+        // Input Handler
+        InputHandler InputHandler;
 
         public Menu(string Title, Color TitleColor, string Font)
         {
+            InputHandler = new InputHandler(this);
+
             this.Title = Title;
             this.Color = TitleColor;
             this.Font = Font;
@@ -55,6 +67,7 @@ namespace PinxUI.Menus
 
             MainFrameTexture = LoadTexture("SolidFrame");
             ItemTexture = LoadTexture("ItemFrame");
+            ItemSelectedTexture = LoadTexture("ItemSelectedFrame");
 
             if (MainFrameTexture == null)
             {
@@ -81,6 +94,9 @@ namespace PinxUI.Menus
         {
             if (Active)
             {
+                // input
+                InputHandler.ProcessInput();
+                //
                 var e = GraphicsArgs.Graphics;
 
                 _mainFrameRect = new RectangleF(PositionX, PositionY, Width, Height);
@@ -100,7 +116,7 @@ namespace PinxUI.Menus
                 }
 
                 // Draw Items
-                float itemOffsetY = PositionY * 1.8f;
+                itemOffsetY = PositionY * 1.8f;
                 for (int i = 0; i < Items.Count; i++)
                 {
                     Items[i].Width = Width * 0.9f;
@@ -108,25 +124,44 @@ namespace PinxUI.Menus
                     Items[i].PositionX = PositionX + ((Width / 2) - (Items[i].Width / 2));
                     Items[i].PositionY = PositionY + itemOffsetY;
 
-                    RectangleF _ItemFrameRect = new RectangleF(Items[i].PositionX, Items[i].PositionY, Items[i].Width, Items[i].Height);
+                    _itemFrameRect = new RectangleF(Items[i].PositionX, Items[i].PositionY, Items[i].Width, Items[i].Height);
 
-                    // Check if ItemTexture is loaded
-                    if (ItemTexture != null)
+                    if (_itemFrameRect.IntersectsWith(_mainFrameRect))
                     {
-                        e.DrawTexture(ItemTexture, _ItemFrameRect);
-                    }
-                    else
-                    {
-                        Game.LogTrivial("ItemTexture is not loaded.");
-                    }
+                        // Check if ItemTexture is loaded
+                        if (ItemTexture != null && ItemSelectedTexture != null)
+                        {
+                            if (Items.IndexOf(Items[i]) == selectedItemIndex) 
+                            {
+                                e.DrawTexture(ItemSelectedTexture, _itemFrameRect);
+                            }
+                            else
+                            {
+                                e.DrawTexture(ItemTexture, _itemFrameRect);
+                            }
+                            
+                        }
+                        else
+                        {
+                            Game.LogTrivial("ItemTexture is not loaded.");
+                        }
 
-                    // Items Text
-                    SizeF _textMeasure = Rage.Graphics.MeasureText(Items[i].Text, Items[i].Font, _fontSizes); // Measure the text 
-                    float textOffsetY = Items[i].PositionY + ((Items[i].Height / 2f) - (_textMeasure.Height)); // Centralize the text Y position. Not accurate,,,
-                    e.DrawText(Items[i].Text, Items[i].Font, _fontSizes, new PointF(Items[i].PositionX + 5f, textOffsetY), Items[i].TextColor, _ItemFrameRect);
-                    itemOffsetY += Items[i].Height * 1.1f;
+                        // Items Text
+                        SizeF _textMeasure = Rage.Graphics.MeasureText(Items[i].Text, Items[i].Font, _fontSizes); // Measure the text 
+                        float textOffsetY = Items[i].PositionY + ((Items[i].Height / 2f) - (_textMeasure.Height)); // Centralize the text Y position. Not accurate,,,
+                        e.DrawText(Items[i].Text, Items[i].Font, _fontSizes, new PointF(Items[i].PositionX + 5f, textOffsetY), Items[i].TextColor, _itemFrameRect);
+                        itemOffsetY += Items[i].Height * 1.1f;
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Disable specific game controls.
+        /// </summary>
+        private void DisableControls()
+        {
+
         }
 
         /// <summary>

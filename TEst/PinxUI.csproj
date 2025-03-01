@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Menus\Fonts\FontFamilies.cs" />
+    <Compile Include="Menus\Input\InputHandler.cs" />
     <Compile Include="Menus\Items\IItem.cs" />
     <Compile Include="Menus\Items\Item.cs" />
     <Compile Include="Menus\Menu.cs" />
@@ -58,6 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Menus\Frames\MainFrames\ItemFrame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Menus\Frames\MainFrames\ItemSelectedFrame.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
