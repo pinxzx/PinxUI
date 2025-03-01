@@ -134,15 +134,10 @@ namespace PinxUI.Menus
                             if (Items.IndexOf(Items[i]) == selectedItemIndex) 
                             {
                                 e.DrawTexture(ItemSelectedTexture, _itemFrameRect);
-                            }
-                            else
-                            {
+                            }else {
                                 e.DrawTexture(ItemTexture, _itemFrameRect);
                             }
-                            
-                        }
-                        else
-                        {
+                        } else {
                             Game.LogTrivial("ItemTexture is not loaded.");
                         }
 
@@ -154,14 +149,6 @@ namespace PinxUI.Menus
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Disable specific game controls.
-        /// </summary>
-        private void DisableControls()
-        {
-
         }
 
         /// <summary>
